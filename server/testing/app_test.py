@@ -18,7 +18,9 @@ class TestApp:
             client.post('/login', json={
                 'username': user.username
             })
-
+            
+            print (user)
+                   
             response = client.get('/members_only_articles')
             assert(response.status_code == 200)
 

@@ -22,10 +22,9 @@ api = Api(app)
 def is_member_only():
 
     if 'user_id' not in session:
-       print("do you get here")
-       return {'error': "Unauthorizd"}, 401
+        return {'error': "Unauthorizd"}, 401
     
-    # if request.endpoint != "member_index" \
+    # elif request.endpoint != "member_index" \
     #     or request.endpoint != "member_article" :
     #     return {'error': "Unauthorizd"}, 401
 
