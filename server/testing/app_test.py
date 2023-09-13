@@ -18,9 +18,7 @@ class TestApp:
             client.post('/login', json={
                 'username': user.username
             })
-            
-            print (user)
-                   
+            print("this is user", user)
             response = client.get('/members_only_articles')
             assert(response.status_code == 200)
 
@@ -42,7 +40,11 @@ class TestApp:
 
             response_json = client.get('/members_only_articles').get_json()
             for article in response_json:
+                if article['is_member_only'] == False:
+                    print("This is false  :", article)
+
                 assert article['is_member_only'] == True
+                
 
     def test_can_only_access_member_only_article_while_logged_in(self):
         '''allows logged in users to access full member-only articles at /members_only_articles/<int:id>.'''

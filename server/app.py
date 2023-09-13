@@ -21,13 +21,18 @@ api = Api(app)
 @app.before_request
 def is_member_only():
 
-    if 'user_id' not in session:
-        return {'error': "Unauthorizd"}, 401
-    
-    # elif request.endpoint != "member_index" \
-    #     or request.endpoint != "member_article" :
-    #     return {'error': "Unauthorizd"}, 401
+    print("begining", request.endpoint) 
 
+    if not session.get('user_id') \
+        and request.endpoint != "login":
+        return {'error': "Unauthorizd"}, 401
+    elif request.endpoint != "member_index" \
+        and request.endpoint != "member_article"\
+        and request.endpoint != "login" \
+        and request.endpoint != "logout":
+        print("if session", request.endpoint)
+        return {'error': "Unauthorizd"}, 401
+       
 class ClearSession(Resource):
 
     def delete(self):
@@ -96,7 +101,8 @@ class CheckSession(Resource):
 
 class MemberOnlyIndex(Resource):
     def get(self):    
-        articles = [article.to_dict() for article in Article.query.all()]
+        articles = [article.to_dict() for article in Article.query.all() if article.is_member_only == True]
+        
         return make_response((articles), 200)
 
 class MemberOnlyArticle(Resource):
